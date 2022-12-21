@@ -13,3 +13,8 @@ app/*/*/*/__pycache__/
 .env/
 .venv/
 venv/
+
+app/app/__init__.py
+app/app/asgi.py
+app/app/settings.py
+app/app/wsgi.py
