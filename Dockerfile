@@ -7,6 +7,7 @@ ENV PYTHONUNBUFFERED 1
 # each path is copied to the docker image
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./app /app
+COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 WORKDIR /app
 EXPOSE 8000
 
@@ -19,9 +20,14 @@ EXPOSE 8000
 # 5th line: new user inside our image. Best practice not to use the root-user 
 #          (full access and permissions to the server).If app is compromised then
 #          the damage is limited to only what the adduser can do
+
+ARG DEV=false
 RUN python -m venv /py && \ 
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
+    if [ $DEV = "true" ]; \
+        then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
+    fi && \
     rm -rf /tmp && \
     adduser \
         --disabled-password \
